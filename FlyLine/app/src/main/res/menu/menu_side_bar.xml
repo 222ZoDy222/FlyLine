@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <item android:id="@+id/navigate_connection"
+        android:title="Connection"
+        android:icon="@drawable/bluetooth_24px"/>
+
+    <item android:id="@+id/configurationFragment"
+        android:title="Settings"
+        android:icon="@drawable/settings_24px"/>
+
+    <item android:id="@+id/navigate_manual"
+        android:title="Manual"
+        android:icon="@drawable/library_books_24px"/>
+
+    <item android:id="@+id/aboutFragment"
+        android:title="About"
+        android:icon="@drawable/info_24px"/>
+
+
+</menu>

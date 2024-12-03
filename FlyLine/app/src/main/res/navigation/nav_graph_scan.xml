@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_scan"
+    app:startDestination="@id/scanningFragment">
+
+    <fragment
+        android:id="@+id/scanningFragment"
+        android:name="com.zdy.flyline.activities.scanning.scanningFragment.UI.ScanningFragment"
+        android:label="@string/scanning"
+        tools:layout="@layout/fragment_scanning" >
+        <action
+            android:id="@+id/action_scanningFragment_to_connectionFragment"
+            app:destination="@id/connectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectionFragment"
+        android:name="com.zdy.flyline.activities.scanning.fragments.connection.ConnectionFragment"
+        android:label="fragment_connection"
+        tools:layout="@layout/fragment_connection" >
+        <action
+            android:id="@+id/action_connectionFragment_to_passwordFragment"
+            app:destination="@id/passwordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordFragment"
+        android:name="com.zdy.flyline.activities.scanning.fragments.password.PasswordFragment"
+        android:label="fragment_password"
+        tools:layout="@layout/fragment_password" />
+</navigation>

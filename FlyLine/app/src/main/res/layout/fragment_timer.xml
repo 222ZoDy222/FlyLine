@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activities.settings.fragments.timer.TimerFragment">
+
+
+    <LinearLayout
+        android:id="@+id/timerLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Время выключения"
+
+            android:textSize="10pt"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="0:00"
+            android:textSize="40pt" />
+
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <TextView
+            android:id="@+id/textViewStartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Stop"
+            android:textColor="@color/red"
+            android:textSize="25pt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="engine"
+            android:textSize="15pt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStartButton" />
+
+        <ImageButton
+            android:id="@+id/stopEngine_button"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:background="@color/transparent"
+            android:contentDescription="Stop Engine Button"
+            android:src="@drawable/circle_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+
+            <TextView
+                android:background="@drawable/borders_item"
+                android:id="@+id/text_time_fly"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="1"
+                android:layout_rowWeight="1"
+                android:layout_columnSpan="1"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="@string/fly_time"
+                android:textAllCaps="false"/>
+
+            <TextView
+                android:background="@drawable/borders_item"
+                android:id="@+id/text_sensor_sas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="1"
+                android:layout_rowWeight="1"
+                android:layout_columnSpan="1"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="@string/sas"
+                android:textAllCaps="false"
+                />
+
+            <TextView
+                android:background="@drawable/borders_item"
+                android:id="@+id/text_min"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="1"
+                android:layout_rowWeight="1"
+                android:layout_columnSpan="1"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="@string/min_rpm"
+                android:textAllCaps="false"/>
+
+            <TextView
+                android:background="@drawable/borders_item"
+                android:id="@+id/text_sensor_siy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="1"
+                android:layout_rowWeight="1"
+                android:layout_columnSpan="1"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="@string/siy"
+                android:textAllCaps="false"/>
+
+            <TextView
+                android:background="@drawable/borders_item"
+                android:id="@+id/text_mid"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="1"
+                android:layout_rowWeight="1"
+                android:layout_columnSpan="1"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="@string/midRpm" />
+
+            <TextView
+                android:background="@drawable/borders_item"
+                android:id="@+id/text_mod"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="1"
+                android:layout_rowWeight="1"
+                android:layout_columnSpan="1"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="@string/mode"
+                android:textAllCaps="false"/>
+
+            <TextView
+                android:background="@drawable/borders_item"
+                android:id="@+id/text_max"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="1"
+                android:layout_rowWeight="1"
+                android:layout_columnSpan="1"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="@string/maxRpm"
+                android:textAllCaps="false"/>
+
+            <TextView
+                android:background="@drawable/borders_item"
+                android:id="@+id/text_voltage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="1"
+                android:layout_rowWeight="1"
+                android:layout_columnSpan="1"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="@string/voltage"
+                android:textAllCaps="false"/>
+
+        </GridLayout>
+
+        <GridLayout
+            android:id="@+id/rpm_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:columnCount="3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gridLayout">
+
+            <TextView
+                android:layout_rowSpan="1"
+                android:layout_rowWeight="1"
+                android:layout_columnSpan="3"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="Средние обороты двигателя" />
+
+            <ImageButton
+                android:id="@+id/up_rpm_button"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:backgroundTint="@color/transparent"
+                android:rotation="-90"
+                android:scaleType="centerCrop"
+                android:src="@drawable/arrow_forward_ios_24px"
+                app:tint="@color/red" />
+
+            <TextView
+                android:id="@+id/currentRPM"
+                android:layout_rowSpan="1"
+                android:layout_rowWeight="1"
+                android:layout_columnSpan="1"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="12300"
+                android:textSize="21pt" />
+
+            <ImageButton
+                android:id="@+id/down_rpm_button"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+
+                android:backgroundTint="@color/transparent"
+                android:rotation="90"
+                android:scaleType="centerCrop"
+                android:src="@drawable/arrow_forward_ios_24px"
+                app:tint="@color/red" />
+
+        </GridLayout>
+
+        <LinearLayout
+            android:id="@+id/warning_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            app:layout_constraintTop_toBottomOf="@id/rpm_grid">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Авария"
+                android:textColor="@color/red"
+                android:textSize="13pt" />
+
+            <TextView
+                android:id="@+id/warning_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:text="Нет сигнала сенсора"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="13pt" />
+
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
