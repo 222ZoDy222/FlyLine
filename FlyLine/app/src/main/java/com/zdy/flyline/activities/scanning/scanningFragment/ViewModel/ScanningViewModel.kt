@@ -5,18 +5,25 @@ import android.app.Application
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
+import android.content.Context
 import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zdy.flyline.BLE.Repository.bluetoothModels.BleConnectionModel
+import com.zdy.flyline.BLE.Repository.bluetoothModels.BleSendingModel
 import com.zdy.flyline.models.permissions.PermissionsModel
 import com.zdy.flyline.R
 import com.zdy.flyline.models.ScanningModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ScanningViewModel(
-    private val application: Application
-) : AndroidViewModel(application) {
+@HiltViewModel
+class ScanningViewModel @Inject constructor(
+    private val bluetoothModel: BleConnectionModel,
+) : ViewModel() {
 
 
 
@@ -24,38 +31,36 @@ class ScanningViewModel(
 
     fun getErrorMessage() = errorMessage
 
-    private val permissionsModel by lazy {
-        PermissionsModel(application.applicationContext)
-    }
+    private lateinit var permissionsModel : PermissionsModel
+    private lateinit var scanningModel : ScanningModel
 
-    private val scanningModel = ScanningModel(application.applicationContext)
-
-
-    init{
-
-        checkPermissions()
+    fun onCreate(context: Context){
+        bluetoothModel.stopConnection()
+        permissionsModel = PermissionsModel(context)
+        scanningModel = ScanningModel(context)
+        checkPermissions(context)
 
     }
 
-    fun checkPermissions(){
+    fun checkPermissions(context: Context){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
             if(permissionsModel.hasLocationPermission()){
                 if(permissionsModel.hasNearbyDevicesPermission()){
                     errorMessage.postValue(null)
                     startScan()
                 }else{
-                    errorMessage.postValue(application.applicationContext.getString(R.string.hasnearbydevicespermission))
+                    errorMessage.postValue(context.getString(R.string.hasnearbydevicespermission))
                     permissionsModel.requestNearbyDevicesPermission()
                 }
             }else{
-                errorMessage.postValue(application.applicationContext.getString(R.string.nolocationpermission))
+                errorMessage.postValue(context.getString(R.string.nolocationpermission))
                 permissionsModel.requestLocationPermission()
             }
         }else {
             if (permissionsModel.hasLocationPermission()) {
                 errorMessage.postValue(null)
             } else {
-                errorMessage.postValue(application.applicationContext.getString(R.string.nolocationpermission))
+                errorMessage.postValue(context.getString(R.string.nolocationpermission))
                 permissionsModel.requestLocationPermission()
             }
         }
@@ -107,21 +112,6 @@ class ScanningViewModel(
     }
 
 
-
-
-
-
-
-
-
-
-
-    // PERMISSIONS ------------------------------
-    fun setRequestPermissionLauncher(launcher: ActivityResultLauncher<Array<String>>){
-        // TODO: Set Request permission launcher in fragment
-        permissionsModel.setRequestPermissionLauncher(launcher)
-    }
-    /////////////////////////////////////////////
 
 
 }

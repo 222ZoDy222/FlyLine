@@ -95,10 +95,12 @@ class ParameterTimeRecycleViewHolder(private val binding : ItemParameterTimeSett
 
         // Создаем диалог
         val dialog = AlertDialog.Builder(itemView.context, R.style.CustomAlertDialogTheme)
-
             .setView(dialogBinding.root)
             .create()
 
+
+
+        dialogBinding.titleViewTime.text = currentParameter.parameterInt.name
 
         dialogBinding.okButton.setOnClickListener {
             val newMinute = dialogBinding.minutePicker.value

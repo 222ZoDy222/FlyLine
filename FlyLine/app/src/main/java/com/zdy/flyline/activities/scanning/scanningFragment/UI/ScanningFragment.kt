@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zdy.flyline.R
@@ -15,18 +16,14 @@ import com.zdy.flyline.activities.scanning.interfaces.INavigationActivity
 import com.zdy.flyline.activities.scanning.scanningFragment.UI.Recycle.ScanningDeviceAdapter
 import com.zdy.flyline.activities.scanning.scanningFragment.ViewModel.ScanningViewModel
 import com.zdy.flyline.databinding.FragmentScanningBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ScanningFragment : Fragment() {
 
     lateinit var binding: FragmentScanningBinding
 
-    private val mViewModel: ScanningViewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        )[ScanningViewModel::class.java]
-    }
+    private val mViewModel: ScanningViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +35,10 @@ class ScanningFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mViewModel.onCreate(requireContext())
         setupRecycle()
         addListeners()
-
+        mViewModel.startScan()
 
     }
 

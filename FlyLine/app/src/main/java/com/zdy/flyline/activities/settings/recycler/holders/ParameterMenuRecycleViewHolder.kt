@@ -1,5 +1,7 @@
 package com.zdy.flyline.activities.settings.recycler.holders
 
+import android.content.Intent
+import com.zdy.flyline.activities.changepassword.ChangePasswordActivity
 import com.zdy.flyline.activities.settings.recycler.items.ItemRecycle
 import com.zdy.flyline.databinding.ItemMenuSettingsLayoutBinding
 
@@ -17,15 +19,22 @@ class ParameterMenuRecycleViewHolder(private val binding: ItemMenuSettingsLayout
         currentParameter = parameter
 
         itemView.apply {
-
             binding.parameterName.text = currentParameter.menuParameters.name
             setOnClickListener {
-                onItemClickListener?.invoke(currentParameter)
+                if(currentParameter.menuParameters.isPassword){
+                    val intent = Intent(context,ChangePasswordActivity::class.java)
+                    context.startActivity(intent)
+                } else{
+                    onItemClickListener?.invoke(currentParameter)
+                }
+
             }
 
         }
 
     }
+
+
 
 
 

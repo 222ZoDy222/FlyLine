@@ -2,15 +2,21 @@ package com.zdy.flyline.activities.settings.fragments.timer
 
 import android.os.Bundle
 import android.os.Handler
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.zdy.flyline.R
 import com.zdy.flyline.databinding.FragmentTimerBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
+
 
 @AndroidEntryPoint
 class TimerFragment : Fragment() {
@@ -35,10 +41,32 @@ class TimerFragment : Fragment() {
 
 
 
+        viewModel.getProgressBarValue().observe(viewLifecycleOwner){
+            binding.buttonProgress.progress = it
+        }
+        binding.stopTouchFrame.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    viewModel.actionDownStop()
+                    true
+                }
+                MotionEvent.ACTION_UP -> {
+                    viewModel.actionUpStop()
+                    binding.constraintLayoutStopButton.performClick()
+                    true
+                }
+                else -> false
+            }
+        }
+
+
+
         addListeners()
         viewModel.reloadParameters()
 
     }
+
+
 
     private fun addListeners(){
 
@@ -46,10 +74,22 @@ class TimerFragment : Fragment() {
             (activity as AppCompatActivity).supportActionBar?.title ="Fly-controller version: $it"
         }
 
-        viewModel.flyTime.observe(viewLifecycleOwner){
-            binding.textTimeFly.text = it.toString()
+
+
+        viewModel.currentFlyTime.observe(viewLifecycleOwner){
+            if(it != null){
+                binding.currentFlyTime.text = it
+                binding.currentFlyTime.visibility = View.VISIBLE
+            } else{
+                binding.currentFlyTime.text = "00:00"
+            }
+
         }
 
+
+        viewModel.flyTime.observe(viewLifecycleOwner){
+            binding.textTimeFly.text = "${getString(R.string.fly_time)} - $it"
+        }
         viewModel.sensorSAS.observe(viewLifecycleOwner){
             binding.textSensorSas.text =  "${getString(R.string.sas)} - $it"
         }
@@ -57,7 +97,7 @@ class TimerFragment : Fragment() {
             binding.textSensorSiy.text = "${getString(R.string.siy)} - $it"
         }
         viewModel.mode.observe(viewLifecycleOwner){
-            binding.textMod.text = "${getString(R.string.mode)} - $it"
+            binding.textMod.text = "${getString(R.string.mode)} - MOD $it"
         }
         viewModel.rpmMin.observe(viewLifecycleOwner){
             binding.textMin.text = "${getString(R.string.min_rpm)} - $it"
@@ -70,9 +110,6 @@ class TimerFragment : Fragment() {
             binding.textMax.text = "${getString(R.string.maxRpm)} - $it"
         }
 
-        binding.stopEngineButton.setOnClickListener {
-            viewModel.engineStop()
-        }
 
         binding.downRpmButton.setOnClickListener {
             viewModel.minusRPM()
@@ -84,7 +121,7 @@ class TimerFragment : Fragment() {
 
         viewModel.errorMessage.observe(viewLifecycleOwner){
             if(it == null){
-                binding.warningLayout.visibility = View.GONE
+                binding.warningLayout.visibility = View.INVISIBLE
             } else if(it != ""){
                 binding.warningLayout.visibility = View.VISIBLE
                 binding.warningMessage.text = it
@@ -95,7 +132,7 @@ class TimerFragment : Fragment() {
         binding.warningLayout.setOnClickListener {
             clickWarningCount++
             if(clickWarningCount == 5){
-                binding.warningLayout.visibility = View.GONE
+                binding.warningLayout.visibility = View.INVISIBLE
             }
             @Suppress("DEPRECATION")
             Handler().postDelayed({ clickWarningCount = 0 }, 2000)

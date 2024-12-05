@@ -1,15 +1,20 @@
 package com.zdy.flyline.protocol.parameters
 
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
 
 data class MenuParameters(
     override val name: String,
-    val parameters: List<Parameter>
+    val parameters: List<Parameter>,
+    val isPassword: Boolean = false
 ) : Parameter(name) {
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
-        parcel.createTypedArrayList(Parameter)!!
+        parcel.createTypedArrayList(Parameter)!!,
+        parcel.readBoolean()
     ) {
     }
 
@@ -24,6 +29,7 @@ data class MenuParameters(
     }
 
     companion object CREATOR : Parcelable.Creator<MenuParameters> {
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun createFromParcel(parcel: Parcel): MenuParameters {
             return MenuParameters(parcel)
         }

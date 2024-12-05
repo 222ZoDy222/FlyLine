@@ -45,14 +45,25 @@ class BleSendingModel : BleConnectionModel() {
         }
     }
 
+    var isFlying = false
+
+
+    private var isFlyingListener : ((Boolean)->Unit)? = null
+    fun setFlyListener(callback: (Boolean)->Unit){
+        isFlyingListener = callback
+    }
     private fun checkReadableData(data: String?){
 
         when(data){
             "StartFly\n" -> {
                 // TODO: Callback start fly
+                isFlying = true
+                isFlyingListener?.invoke(isFlying)
             }
             "StopFly\n" -> {
                 // TODO: callback stop fly
+                isFlying = false
+                isFlyingListener?.invoke(isFlying)
             }
             else ->{
                 endCommand(data)

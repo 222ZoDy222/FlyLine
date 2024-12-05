@@ -18,8 +18,6 @@ class SettingsViewModel @Inject constructor(
     private val bluetoothConnectionModel: BleConnectionModel,
 ) : ViewModel() {
 
-    private val menuParameters: MenuParameters = SettingsMenu_main.getMenu()
-
     fun getBtModel() = bluetoothConnectionModel
 
     private val mIsConnected: MutableLiveData<connectionState> = MutableLiveData(connectionState.disconnected)
@@ -54,7 +52,7 @@ class SettingsViewModel @Inject constructor(
         bluetoothConnectionModel.resume(context)
     }
 
-    fun destroy(){
+    fun disconnect(){
         bluetoothConnectionModel.stopConnection()
     }
 }

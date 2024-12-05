@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zdy.flyline.BLE.Repository.bluetoothModels.BleSendingModel
+import com.zdy.flyline.models.FlyControllerModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class PasswordViewModel @Inject constructor(
-    private val bluetoothModel: BleSendingModel
+    private val bluetoothModel: BleSendingModel,
+    private val controllerModel: FlyControllerModel,
 ) : ViewModel() {
 
 
@@ -31,6 +33,7 @@ class PasswordViewModel @Inject constructor(
             if(it.answer == BleSendingModel.FlyControllerAnswer.OK){
                 when (it.data) {
                     "OK" -> {
+                        controllerModel.controllerPassword = password
                         isAuthenticated.postValue(true)
                         error.postValue("")
                     }
@@ -50,6 +53,23 @@ class PasswordViewModel @Inject constructor(
 
     }
 
+    fun tryDefaultPass(callback: (Boolean)->Unit){
+        bluetoothModel.get("CPC0000"){
+
+            if(it.answer == BleSendingModel.FlyControllerAnswer.OK){
+                if(it.data == "OK"){
+                    controllerModel.controllerPassword = "0000"
+                    callback.invoke(true)
+                    return@get
+                }
+            }
+
+            callback.invoke(false)
+
+
+        }
+    }
+
     fun pause(){
         bluetoothModel.pause()
     }
@@ -58,7 +78,9 @@ class PasswordViewModel @Inject constructor(
         bluetoothModel.resume(context)
     }
 
-    fun destroy(){
+
+
+    fun disconnect(){
         bluetoothModel.stopConnection()
     }
 

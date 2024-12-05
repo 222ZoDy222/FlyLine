@@ -58,10 +58,10 @@ class ParameterIntRecycleViewHolder(private val binding: ItemParameterSettingsLa
         dialogBinding.editText.setText(currentParameter.parameterInt.currentValue.toString())
         // Создаем диалог
         val dialog = AlertDialog.Builder(itemView.context, R.style.CustomAlertDialogTheme)
-
             .setView(dialogBinding.root)
             .create()
 
+        dialogBinding.titleViewInt.text = currentParameter.parameterInt.name
 
 
         dialogBinding.okButton.setOnClickListener {

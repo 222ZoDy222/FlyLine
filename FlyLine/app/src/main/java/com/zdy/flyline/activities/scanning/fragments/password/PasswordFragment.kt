@@ -10,9 +10,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.zdy.flyline.R
+import com.zdy.flyline.activities.scanning.interfaces.INavigationActivity
 import com.zdy.flyline.activities.settings.SettingsActivity
 import com.zdy.flyline.activities.settings.interfaces.ISettingsActivity
 import com.zdy.flyline.databinding.FragmentPasswordBinding
@@ -29,6 +35,7 @@ class PasswordFragment : Fragment() {
 
     private lateinit var binding : FragmentPasswordBinding
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +48,14 @@ class PasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.loadingContainer.visibility = View.VISIBLE
+        viewModel.tryDefaultPass {
+            if(it){
+                goToSettings()
+            } else{
+                binding.loadingContainer.visibility = View.GONE
+            }
+        }
 
         binding.enterPasswordButton.setOnClickListener{
             viewModel.applyPass()
@@ -54,6 +69,8 @@ class PasswordFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
 
         })
+
+
 
 
         viewModel.getError().observe(viewLifecycleOwner){
@@ -75,9 +92,15 @@ class PasswordFragment : Fragment() {
 
     }
 
+
+    private var registrationLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){
+            (activity as INavigationActivity).getNavController().navigate(R.id.action_passwordFragment_to_scanningFragment)
+    }
     fun goToSettings(){
+
         val intent = Intent(context, SettingsActivity::class.java)
-        startActivity(intent)
+        registrationLauncher.launch(intent)
     }
 
     override fun onPause() {
@@ -90,10 +113,7 @@ class PasswordFragment : Fragment() {
         viewModel.resume(requireContext())
     }
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        viewModel.destroy()
-//    }
+
 
 
 }

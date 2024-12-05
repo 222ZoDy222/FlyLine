@@ -21,11 +21,18 @@
         tools:layout="@layout/fragment_connection" >
         <action
             android:id="@+id/action_connectionFragment_to_passwordFragment"
-            app:destination="@id/passwordFragment" />
+            app:destination="@id/passwordFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
         android:name="com.zdy.flyline.activities.scanning.fragments.password.PasswordFragment"
         android:label="fragment_password"
-        tools:layout="@layout/fragment_password" />
+        tools:layout="@layout/fragment_password" >
+        <action
+            android:id="@+id/action_passwordFragment_to_scanningFragment"
+            app:destination="@id/scanningFragment"
+            app:popUpTo="@id/scanningFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

@@ -11,7 +11,7 @@
     >
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/titleViewInt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Введите значение"
@@ -37,7 +37,7 @@
         android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/titleViewInt"
         android:inputType="phone"
         />
 

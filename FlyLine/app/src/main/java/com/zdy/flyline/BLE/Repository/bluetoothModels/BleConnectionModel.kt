@@ -11,6 +11,7 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import com.zdy.flyline.BLE.BluetoothLeService
 import com.zdy.flyline.BLE.Repository.IConnectionState
+import com.zdy.flyline.di.App
 import com.zdy.flyline.utils.connectionState
 
 open class BleConnectionModel : BluetoothModel() {
@@ -84,10 +85,15 @@ open class BleConnectionModel : BluetoothModel() {
         deviceToConnect = device
         // Creating service
         resume(context)
-        if(isServiceConnected){
-            context.unbindService(serviceConnection)
+        try{
+            if(isServiceConnected){
+                context.unbindService(serviceConnection)
+                isServiceConnected = false
+            }
+        } catch (ex: Exception){
             isServiceConnected = false
         }
+
         val intent = Intent(context, BluetoothLeService::class.java)
         context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
 
@@ -114,10 +120,16 @@ open class BleConnectionModel : BluetoothModel() {
 
 
     fun stopConnection(){
-//        if(isServiceConnected){
-//            context.unbindService(serviceConnection)
-//            isServiceConnected = false
-//        }
+        try{
+            if(isServiceConnected){
+                bluetoothService?.disconnect()
+                context.unbindService(serviceConnection)
+                isServiceConnected = false
+            }
+        }catch (ex: Exception){
+            var t = 0
+        }
+
     }
 
 }

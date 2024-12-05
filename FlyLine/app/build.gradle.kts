@@ -45,6 +45,9 @@ android {
 dependencies {
 
 
+    // ------ Circular progress bar ------ //
+    implementation("com.mikhaellopez:circularprogressbar:3.1.0")
+
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     // ----- Hilt ------ //
     val daggerHiltVersion = "2.51.1"
@@ -65,6 +68,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${coroutineLifecycleScopesVersion}")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:${coroutineLifecycleScopesVersion}")
     implementation("androidx.fragment:fragment-ktx:1.8.5")
+    implementation("androidx.activity:activity-ktx:1.9.3")
     //------------------------------------//
 
 

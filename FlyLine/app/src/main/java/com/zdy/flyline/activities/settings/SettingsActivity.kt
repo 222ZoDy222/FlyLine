@@ -55,6 +55,7 @@ class SettingsActivity : AppCompatActivity(), ISettingsActivity, INavigationActi
             navigationView.setNavigationItemSelectedListener {
                 if(it.itemId == R.id.navigate_connection){
                     // If click button "connection" -> we go back to connection activity
+                    settingsViewModel.disconnect()
                     finish()
                 } else{
                     // If click another buttons we use automatically navigation by ID's
@@ -92,9 +93,8 @@ class SettingsActivity : AppCompatActivity(), ISettingsActivity, INavigationActi
 
     override fun onDestroy() {
         super.onDestroy()
-        settingsViewModel.destroy()
+        settingsViewModel.disconnect()
     }
-
 
     companion object{
         const val DEVICE_TAG = "BLE_DEVICE"

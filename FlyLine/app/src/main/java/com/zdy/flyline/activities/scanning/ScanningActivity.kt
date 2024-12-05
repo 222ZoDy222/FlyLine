@@ -2,6 +2,8 @@ package com.zdy.flyline.activities.scanning
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -22,9 +24,29 @@ class ScanningActivity : AppCompatActivity(), INavigationActivity {
         navController = navHostFragment.navController
 
         setupActionBarWithNavController(navController)
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if(navController.currentDestination?.id == R.id.passwordFragment){
+                        navController.navigate(R.id.action_passwordFragment_to_scanningFragment)
+                    } else{
+                        navController.navigateUp()
+                    }
+                }
+            }
+        )
 
     }
 
+
+    override fun onSupportNavigateUp(): Boolean {
+        if(navController.currentDestination?.id == R.id.passwordFragment){
+            navController.navigate(R.id.action_passwordFragment_to_scanningFragment)
+            return false
+        }
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
     override fun getNavController(): NavController = navController
 
 

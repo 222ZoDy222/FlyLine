@@ -12,6 +12,7 @@ class SettingsMenu_main {
                     SettingsMenu_RPM.getMenu(),
                     SettingsMenu_SensorSettings.getMenu(),
                     SettingsMenu_PID.getMenu(),
+                    MenuParameters("Изменить пароль", listOf(), true)
                 )
             )
         }

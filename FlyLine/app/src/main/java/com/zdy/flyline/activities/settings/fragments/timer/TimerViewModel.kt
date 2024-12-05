@@ -1,5 +1,6 @@
 package com.zdy.flyline.activities.settings.fragments.timer
 
+import android.os.CountDownTimer
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,6 +8,7 @@ import com.zdy.flyline.BLE.Repository.bluetoothModels.BleSendingModel
 import com.zdy.flyline.models.FlyControllerModel
 import com.zdy.flyline.utils.connectionState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,16 +16,17 @@ import javax.inject.Inject
 @HiltViewModel
 class TimerViewModel @Inject constructor(
     private val bluetoothSendingModel: BleSendingModel,
-
+    private val flyControllerModel : FlyControllerModel
 ) : ViewModel() {
 
-    private val flyControllerModel = FlyControllerModel(bluetoothSendingModel)
+
     val version : MutableLiveData<String> = MutableLiveData("")
 
     val rpmMid : MutableLiveData<Int> = MutableLiveData()
 
 
-    val flyTime : MutableLiveData<Int> = MutableLiveData(null)
+    val flyTime : MutableLiveData<String> = MutableLiveData(null)
+    val currentFlyTime : MutableLiveData<String> = MutableLiveData(null)
 
     val sensorSAS : MutableLiveData<Int> = MutableLiveData(null)
     val sensorSIY : MutableLiveData<Int> = MutableLiveData(null)
@@ -33,9 +36,15 @@ class TimerViewModel @Inject constructor(
     val rpmMax : MutableLiveData<Int> = MutableLiveData(null)
     val errorMessage : MutableLiveData<String> = MutableLiveData(null)
 
+
+
     init {
         if(bluetoothSendingModel.getConnectionState() != connectionState.disconnected) {
             requestErrors()
+        }
+
+        flyControllerModel.setTickListener {
+            currentFlyTime.postValue(String.format("%02d:%02d", it/60, it%60))
         }
     }
 
@@ -71,7 +80,7 @@ class TimerViewModel @Inject constructor(
     fun reloadParameters(){
         if(bluetoothSendingModel.getConnectionState() != connectionState.disconnected) {
             requestParameters()
-            flyControllerModel.getTimer()
+            flyControllerModel.getTimerParameters()
         }
     }
     private fun requestParameters() = viewModelScope.launch{
@@ -84,13 +93,25 @@ class TimerViewModel @Inject constructor(
         requestParameterInt(rpmMin,"MID")
         requestParameterInt(rpmMid,"FPD")
         requestParameterInt(rpmMax,"MAD")
-
+        requestParameterInt(rpmMax,"MAD")
+        requestParameter(flyTime,"EWT", true)
     }
 
-    private suspend fun requestParameter(liveData: MutableLiveData<String>, command : String){
+    private suspend fun requestParameter(liveData: MutableLiveData<String>, command : String, isTimeParameter: Boolean = false){
         bluetoothSendingModel.get(command){
             if(it.answer == BleSendingModel.FlyControllerAnswer.OK){
-                liveData.postValue(it.data)
+                if(it.data != null){
+                    if(isTimeParameter){
+                        val intValue = it.data.toInt()
+                        liveData.postValue("${intValue/60}:${intValue%60}")
+                    } else{
+                        liveData.postValue(it.data)
+                    }
+                } else{
+                    liveData.postValue("-")
+                }
+
+
             } else{
                 viewModelScope.launch {
                     delay(2000)
@@ -104,23 +125,18 @@ class TimerViewModel @Inject constructor(
         bluetoothSendingModel.get(command){
             if(it.answer == BleSendingModel.FlyControllerAnswer.OK){
                 liveData.postValue(it.data?.toInt())
+
             } else{
                 viewModelScope.launch {
                     delay(2000)
-                    requestParameterInt(liveData,command)
+                    requestParameterInt(liveData, command)
                 }
             }
         }
     }
 
-    fun engineStop(){
-        bluetoothSendingModel.send("STOP"){
-            if(it.answer == BleSendingModel.FlyControllerAnswer.OK){
-
-            } else {
-                // TODO: Error
-            }
-        }
+    private fun engineStop(){
+        flyControllerModel.stopTimer()
     }
 
 
@@ -149,6 +165,35 @@ class TimerViewModel @Inject constructor(
             }
         }
     }
+
+
+
+    private val progressBarValue = MutableLiveData<Float>(0f)
+    fun getProgressBarValue() = progressBarValue
+    private var isRunning = false
+    private var job: Job? = null
+    fun actionDownStop(){
+        if (isRunning) return
+        isRunning = true
+        job = viewModelScope.launch {
+            while (isRunning) {
+                progressBarValue.value = (progressBarValue.value ?: 0f) + 1
+                if ((progressBarValue.value ?: 0f) >= 100f) {
+                    isRunning = false
+                    engineStop()
+                    break
+                }
+                delay(10)
+            }
+        }
+    }
+
+    fun actionUpStop(){
+        isRunning = false
+        job?.cancel()
+        progressBarValue.value = 0f
+    }
+
 
 
     companion object{

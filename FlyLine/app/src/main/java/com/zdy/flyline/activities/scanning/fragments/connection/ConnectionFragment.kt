@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.zdy.flyline.utils.connectionState.*
@@ -35,6 +37,7 @@ class ConnectionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         val deviceToConnect = arguments?.getParcelable<BluetoothDevice>(DEVICE_TO_CONNECT)
         if(deviceToConnect == null) {
@@ -94,12 +97,6 @@ class ConnectionFragment : Fragment() {
         super.onResume()
         viewModel.resume(requireContext())
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.destroy()
-    }
-
 
 }
 

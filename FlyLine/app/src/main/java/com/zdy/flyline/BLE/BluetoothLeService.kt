@@ -199,6 +199,11 @@ class BluetoothLeService : Service() {
     }
 
     @SuppressLint("MissingPermission")
+    fun disconnect(){
+        bluetoothGatt?.disconnect()
+    }
+
+    @SuppressLint("MissingPermission")
     public fun WriteCharacteristic(msg: String){
 
         val characteristic = getCharacteristic()
