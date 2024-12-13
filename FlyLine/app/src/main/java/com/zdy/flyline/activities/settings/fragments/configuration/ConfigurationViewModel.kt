@@ -17,7 +17,7 @@ class ConfigurationViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    var label: MutableLiveData<String> = MutableLiveData("")
+    var label: MutableLiveData<Any> = MutableLiveData(null)
 
     private val list : MutableLiveData<MutableList<ItemRecycle>> = MutableLiveData(mutableListOf())
     fun getList() = list
@@ -65,7 +65,6 @@ class ConfigurationViewModel @Inject constructor(
     private fun getParameterValue(item: ItemRecycle.ParameterIntItem){
 
         item.parameterInt.getValue(bluetoothSendingModel){
-            val test = item.parameterInt.currentValue
             updateItem?.invoke(item)
         }
 

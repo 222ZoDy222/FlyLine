@@ -34,7 +34,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         }
         viewModel.getErrorMessage().observe(this){
             if(it != null){
-                binding.errorMessage.text = it
+                binding.errorMessage.text = applicationContext.getString(it as Int)
                 binding.errorMessage.visibility = View.VISIBLE
             } else{
                 binding.errorMessage.visibility = View.GONE

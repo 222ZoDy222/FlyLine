@@ -1,5 +1,6 @@
 package com.zdy.flyline.utils.settingsMenues
 
+import com.zdy.flyline.R
 import com.zdy.flyline.protocol.parameters.MenuParameters
 import com.zdy.flyline.protocol.parameters.ParameterInt
 
@@ -8,24 +9,24 @@ class SettingsMenu_SensorSettings {
     companion object{
         fun getMenu() : MenuParameters {
             return MenuParameters(
-                "Параметры датчиков",
+                (R.string.Sensor_parameters),
                 listOf(
                     ParameterInt(
-                        "Режим работы",
+                        (R.string.Operating_mode),
                         0,
                         1,
                         1,
                         "Режим работы",
                         "MOD"),
                     ParameterInt(
-                        "Зона датчика SAS",
+                        (R.string.SAS_sensor_area),
                         1,
                         50,
                         15,
                         "1 – минимальная  чувствительность,  50 – максимальная чувствительность",
                         "SAS"),
                     ParameterInt(
-                        "Зона датчика SIY",
+                        (R.string.SIY_sensor_area),
                         1,
                         200,
                         50,

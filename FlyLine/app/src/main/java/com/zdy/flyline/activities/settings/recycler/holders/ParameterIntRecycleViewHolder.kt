@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.core.content.contentValuesOf
 import com.zdy.flyline.R
 import com.zdy.flyline.activities.settings.recycler.items.ItemRecycle
 import com.zdy.flyline.databinding.DialogIntInputBinding
@@ -31,7 +32,7 @@ class ParameterIntRecycleViewHolder(private val binding: ItemParameterSettingsLa
         currentParameter = parameter
 
         itemView.apply {
-            binding.parameterName.text = currentParameter.parameterInt.name
+            binding.parameterName.text = context.getString(currentParameter.parameterInt.name)
 
 
             if(currentParameter.parameterInt.currentValue == null) {
@@ -61,7 +62,7 @@ class ParameterIntRecycleViewHolder(private val binding: ItemParameterSettingsLa
             .setView(dialogBinding.root)
             .create()
 
-        dialogBinding.titleViewInt.text = currentParameter.parameterInt.name
+        dialogBinding.titleViewInt.text = itemView.context.getString(currentParameter.parameterInt.name)
 
 
         dialogBinding.okButton.setOnClickListener {

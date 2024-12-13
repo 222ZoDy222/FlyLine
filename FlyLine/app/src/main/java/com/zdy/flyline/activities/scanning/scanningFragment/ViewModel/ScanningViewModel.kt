@@ -27,7 +27,7 @@ class ScanningViewModel @Inject constructor(
 
 
 
-    private val errorMessage: MutableLiveData<String> = MutableLiveData(null)
+    private val errorMessage: MutableLiveData<Any> = MutableLiveData(null)
 
     fun getErrorMessage() = errorMessage
 
@@ -38,29 +38,29 @@ class ScanningViewModel @Inject constructor(
         bluetoothModel.stopConnection()
         permissionsModel = PermissionsModel(context)
         scanningModel = ScanningModel(context)
-        checkPermissions(context)
+        checkPermissions()
 
     }
 
-    fun checkPermissions(context: Context){
+    fun checkPermissions(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
             if(permissionsModel.hasLocationPermission()){
                 if(permissionsModel.hasNearbyDevicesPermission()){
                     errorMessage.postValue(null)
                     startScan()
                 }else{
-                    errorMessage.postValue(context.getString(R.string.hasnearbydevicespermission))
+                    errorMessage.postValue(R.string.hasnearbydevicespermission)
                     permissionsModel.requestNearbyDevicesPermission()
                 }
             }else{
-                errorMessage.postValue(context.getString(R.string.nolocationpermission))
+                errorMessage.postValue(R.string.nolocationpermission)
                 permissionsModel.requestLocationPermission()
             }
         }else {
             if (permissionsModel.hasLocationPermission()) {
                 errorMessage.postValue(null)
             } else {
-                errorMessage.postValue(context.getString(R.string.nolocationpermission))
+                errorMessage.postValue(R.string.nolocationpermission)
                 permissionsModel.requestLocationPermission()
             }
         }
@@ -77,9 +77,9 @@ class ScanningViewModel @Inject constructor(
         bleDevices.value?.clear()
         scanningModel.startScan(leScanCallback)
         if(!scanningModel.bluetoothEnabled){
-            errorMessage.postValue("Bluetooth is disabled")
+            errorMessage.postValue(R.string.bluetooth_is_disabled)
         } else if(!scanningModel.locationEnabled){
-            errorMessage.postValue("Location is disabled")
+            errorMessage.postValue(R.string.location_is_disabled)
         } else{
             errorMessage.postValue(null)
         }

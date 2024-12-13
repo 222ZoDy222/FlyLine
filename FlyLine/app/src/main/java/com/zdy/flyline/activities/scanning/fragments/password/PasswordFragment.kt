@@ -78,7 +78,7 @@ class PasswordFragment : Fragment() {
                 binding.errorMessage.visibility = View.GONE
             } else{
                 binding.errorMessage.visibility = View.VISIBLE
-                binding.errorMessage.text = it
+                binding.errorMessage.text = context?.getString(it as Int)
             }
         }
 

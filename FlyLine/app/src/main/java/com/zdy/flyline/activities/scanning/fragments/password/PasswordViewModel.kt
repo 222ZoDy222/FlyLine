@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zdy.flyline.BLE.Repository.bluetoothModels.BleSendingModel
+import com.zdy.flyline.R
 import com.zdy.flyline.models.FlyControllerModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,7 +18,7 @@ class PasswordViewModel @Inject constructor(
 
     private var password : String = ""
 
-    private val error : MutableLiveData<String> = MutableLiveData("")
+    private val error : MutableLiveData<Any> = MutableLiveData("")
     fun getError() = error
 
     private val isAuthenticated : MutableLiveData<Boolean> = MutableLiveData(false)
@@ -35,17 +36,17 @@ class PasswordViewModel @Inject constructor(
                     "OK" -> {
                         controllerModel.controllerPassword = password
                         isAuthenticated.postValue(true)
-                        error.postValue("")
+                        error.postValue(null)
                     }
                     "PINError" -> {
-                        error.postValue("Не верный пароль")
+                        error.postValue(R.string.wrong_password)
                     }
                     else -> {
-                        error.postValue("Ошибка")
+                        error.postValue(R.string.Error)
                     }
                 }
             } else{
-                error.postValue("Ошибка")
+                error.postValue(R.string.Error)
             }
 
 

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zdy.flyline.BLE.Repository.bluetoothModels.BleSendingModel
+import com.zdy.flyline.R
 import com.zdy.flyline.models.FlyControllerModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,7 +15,7 @@ class ChangePasswordViewModel @Inject constructor(
     private val controllerModel: FlyControllerModel,
     private val sendingModel: BleSendingModel
 ) : ViewModel() {
-    private val errorMessage = MutableLiveData<String>(null)
+    private val errorMessage = MutableLiveData<Any>(null)
     fun getErrorMessage() = errorMessage
     private val isComplete = MutableLiveData<Boolean>(false)
 
@@ -36,28 +37,28 @@ class ChangePasswordViewModel @Inject constructor(
         if(controllerModel.controllerPassword != "0000"){
             errorMessage.postValue(null)
             if(oldPass != controllerModel.controllerPassword){
-                errorMessage.postValue("Старый пароль не совпадает")
+                errorMessage.postValue(R.string.Old_pass_not_new_pass)
                 callback.invoke(false)
                 return
             }
         }
 
         if(newPass.length != 4){
-            errorMessage.postValue("Новый пароль должен содержать только 4 цифры")
+            errorMessage.postValue(R.string.Only_4_numbers)
             callback.invoke(false)
             return
         }
         try{
             newPass.toInt()
         } catch (ex:Exception){
-            errorMessage.postValue("Новый пароль должен содержать только цифры")
+            errorMessage.postValue(R.string.New_Password_Only_Numbers)
         }
 
         sendingModel.send("NPC${newPass}"){
             if(it.answer == BleSendingModel.FlyControllerAnswer.OK){
                 callback.invoke(true)
             } else{
-                errorMessage.postValue("Ошибка изменения пароля")
+                errorMessage.postValue(R.string.Error_Change_Password)
                 callback.invoke(false)
             }
         }

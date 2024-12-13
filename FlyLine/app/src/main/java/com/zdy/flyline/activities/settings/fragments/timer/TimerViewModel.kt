@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zdy.flyline.BLE.Repository.bluetoothModels.BleSendingModel
+import com.zdy.flyline.R
 import com.zdy.flyline.models.FlyControllerModel
 import com.zdy.flyline.utils.connectionState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +35,7 @@ class TimerViewModel @Inject constructor(
     val voltage : MutableLiveData<Int> = MutableLiveData(null)
     val rpmMin : MutableLiveData<Int> = MutableLiveData(null)
     val rpmMax : MutableLiveData<Int> = MutableLiveData(null)
-    val errorMessage : MutableLiveData<String> = MutableLiveData(null)
+    val errorMessage : MutableLiveData<Any> = MutableLiveData(null)
 
 
 
@@ -44,7 +45,7 @@ class TimerViewModel @Inject constructor(
         }
 
         flyControllerModel.setTickListener {
-            currentFlyTime.postValue(String.format("%02d:%02d", it/60, it%60))
+            currentFlyTime.postValue(String.format("%01d:%02d", it/60, it%60))
         }
     }
 
@@ -60,13 +61,13 @@ class TimerViewModel @Inject constructor(
                             errorMessage.postValue("")
                         }
                         "Error01" -> {
-                            errorMessage.postValue("Ошибка датчика (сенсора)")
+                            errorMessage.postValue(R.string.Sensor_error)
                         }
                         "Error02" -> {
-                            errorMessage.postValue("Ошибка контроля оборотов")
+                            errorMessage.postValue(R.string.Speed_control_error)
                         }
                         "Error03" -> {
-                            errorMessage.postValue("Ошибка заданных оборотов")
+                            errorMessage.postValue(R.string.Set_speed_error)
                         }
 
                     }
@@ -89,7 +90,6 @@ class TimerViewModel @Inject constructor(
         requestParameterInt(sensorSAS,"SAS")
         requestParameterInt(sensorSIY,"SIY")
         requestParameterInt(mode,"MOD")
-        //requestParameter(voltage,"")
         requestParameterInt(rpmMin,"MID")
         requestParameterInt(rpmMid,"FPD")
         requestParameterInt(rpmMax,"MAD")

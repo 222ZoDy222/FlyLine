@@ -124,7 +124,7 @@ class TimerFragment : Fragment() {
                 binding.warningLayout.visibility = View.INVISIBLE
             } else if(it != ""){
                 binding.warningLayout.visibility = View.VISIBLE
-                binding.warningMessage.text = it
+                binding.warningMessage.text = context?.getString(it as Int)
             }
         }
 

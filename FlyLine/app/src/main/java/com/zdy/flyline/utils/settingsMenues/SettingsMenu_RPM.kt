@@ -1,5 +1,6 @@
 package com.zdy.flyline.utils.settingsMenues
 
+import com.zdy.flyline.R
 import com.zdy.flyline.protocol.parameters.MenuParameters
 import com.zdy.flyline.protocol.parameters.ParameterInt
 
@@ -8,38 +9,38 @@ class SettingsMenu_RPM {
     companion object{
         fun getMenu() : MenuParameters {
             return MenuParameters(
-                "Обороты",
+                (R.string.rpm),
                 listOf(
                     ParameterInt(
-                        "Минимальные обороты двигателя",
+                        (R.string.minimum_rpm),
                         3000,
                         20000,
                         8000,
                         "",
                         "MID"),
                     ParameterInt(
-                        "Средние обороты двигателя",
+                        (R.string.middle_rpm),
                         3000,
                         20000,
                         9000,
                         "",
                         "FPD"),
                     ParameterInt(
-                        "Максимальные обороты двигателя",
+                        (R.string.maximum_rpm),
                         3000,
                         20000,
                         10000,
                         "",
                         "MAD"),
                     ParameterInt(
-                        "Плавный запуск двигателя",
+                        (R.string.smooth_engine_start),
                         1,
                         50,
                         40,
                         "Скорость набора оборотов при старте.( 1 – медленно 50- быстро)",
                         "STR"),
                     ParameterInt(
-                        "Плавная остановка двигателя",
+                        (R.string.Smooth_engine_stop),
                         1,
                         50,
                         40,
@@ -47,14 +48,14 @@ class SettingsMenu_RPM {
                         "STP"),
 
                     ParameterInt(
-                        "PWM минимум",
+                        (R.string.pwm_minimum),
                         800,
                         1200,
                         1000,
                         "Минимальное значение PWM.",
                         "PIN"),
                     ParameterInt(
-                        "PWM максимум",
+                        (R.string.pwm_maximum),
                         1800,
                         2400,
                         2000,

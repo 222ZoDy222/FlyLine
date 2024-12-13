@@ -24,7 +24,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Время выключения"
+                android:text="@string/time_disable"
 
                 android:textSize="10pt"
                 android:gravity="center"
@@ -134,6 +134,7 @@
 
 
                 <TextView
+                    style="@style/TextStyle_scanning"
                     android:id="@+id/text_time_fly"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -147,6 +148,7 @@
                     android:textAllCaps="false" />
 
                 <TextView
+                    style="@style/TextStyle_scanning"
                     android:id="@+id/text_sensor_sas"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -160,6 +162,7 @@
                     android:textAllCaps="false" />
 
                 <TextView
+                    style="@style/TextStyle_scanning"
                     android:id="@+id/text_min"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -173,6 +176,7 @@
                     android:textAllCaps="false" />
 
                 <TextView
+                    style="@style/TextStyle_scanning"
                     android:id="@+id/text_sensor_siy"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -186,6 +190,7 @@
                     android:textAllCaps="false" />
 
                 <TextView
+                    style="@style/TextStyle_scanning"
                     android:id="@+id/text_mid"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -199,6 +204,7 @@
                     android:textAllCaps="false" />
 
                 <TextView
+                    style="@style/TextStyle_scanning"
                     android:id="@+id/text_mod"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -212,6 +218,7 @@
                     android:textAllCaps="false" />
 
                 <TextView
+                    style="@style/TextStyle_scanning"
                     android:id="@+id/text_max"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -225,6 +232,7 @@
                     android:textAllCaps="false" />
 
                 <TextView
+                    style="@style/TextStyle_scanning"
                     android:id="@+id/text_voltage"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -255,7 +263,8 @@
                     android:layout_columnSpan="3"
                     android:layout_columnWeight="1"
                     android:gravity="center"
-                    android:text="Средние обороты двигателя" />
+                    android:text="@string/middle_rpm"
+                    android:textSize="10pt"/>
 
                 <ImageButton
                     android:id="@+id/up_rpm_button"
@@ -296,25 +305,29 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/rpm_grid">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rpm_grid"
+                tools:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Авария"
+                    android:layout_gravity="center"
+                    android:text="@string/accident"
                     android:textColor="@color/red"
-                    android:textSize="13pt" />
+                    android:textSize="10pt" />
 
                 <TextView
                     android:id="@+id/warning_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
-                    android:text="Нет сигнала сенсора"
+                    android:layout_gravity="center"
+                    tools:text="Нет сигнала сенсора"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="13pt" />
+                    android:textSize="8pt" />
 
 
             </LinearLayout>

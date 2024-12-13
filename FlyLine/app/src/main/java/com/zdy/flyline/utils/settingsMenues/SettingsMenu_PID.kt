@@ -1,5 +1,6 @@
 package com.zdy.flyline.utils.settingsMenues
 
+import com.zdy.flyline.R
 import com.zdy.flyline.protocol.parameters.MenuParameters
 import com.zdy.flyline.protocol.parameters.ParameterInt
 
@@ -8,10 +9,10 @@ class SettingsMenu_PID {
     companion object{
         fun getMenu() : MenuParameters{
             return MenuParameters(
-                "Настройки PID",
+                (R.string.pid_settings),
                 listOf(
                     ParameterInt(
-                        "ПИД Kp",
+                        (R.string.kp_PID),
                         0,
                         999,
                         40,
@@ -20,7 +21,7 @@ class SettingsMenu_PID {
                         1
                     ),
                     ParameterInt(
-                        "ПИД Ki",
+                        (R.string.ki_PID),
                         0,
                         999,
                         200,
@@ -29,14 +30,15 @@ class SettingsMenu_PID {
                         1
                     ),
                     ParameterInt(
-                        "ПИД Kd",
+                        (R.string.kd_PID),
                         0,
                         999,
                         80,
                         "",
                         "PKD"
                     ),
-                )
+                ),
+                5,
             )
         }
     }

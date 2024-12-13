@@ -1,5 +1,6 @@
 package com.zdy.flyline.utils.settingsMenues
 
+import com.zdy.flyline.R
 import com.zdy.flyline.protocol.parameters.MenuParameters
 import com.zdy.flyline.protocol.parameters.ParameterInt
 
@@ -8,10 +9,10 @@ class SettingsMenu_Time {
     companion object{
         fun getMenu() : MenuParameters {
             return MenuParameters(
-                "Время",
+                (R.string.time),
                 listOf(
                     ParameterInt(
-                        "Время до старта",
+                        (R.string.Time_before_start),
                         0,
                         60,
                         5,
@@ -19,7 +20,7 @@ class SettingsMenu_Time {
                         "TBS",
                         2),
                     ParameterInt(
-                        "Время полета",
+                        (R.string.fly_time),
                         0,
                         420,
                         330,
@@ -27,7 +28,7 @@ class SettingsMenu_Time {
                         "EWT",
                         2),
                     ParameterInt(
-                        "Интервал сигнала",
+                        (R.string.signal_interval),
                         0,
                         10,
                         2,
@@ -35,7 +36,7 @@ class SettingsMenu_Time {
                         "BST",
                         2),
                     ParameterInt(
-                        "Сигнал вибро до финиша",
+                        (R.string.Vibrate_signal_until_the_finish),
                         0,
                         1,
                         0,

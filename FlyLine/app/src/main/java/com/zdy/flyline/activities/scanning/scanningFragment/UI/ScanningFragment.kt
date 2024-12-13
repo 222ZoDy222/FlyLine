@@ -56,7 +56,7 @@ class ScanningFragment : Fragment() {
         mViewModel.getErrorMessage().observe(viewLifecycleOwner){
             if(it != null){
                 binding.errorMessage.visibility = View.VISIBLE
-                binding.errorMessage.text = it
+                binding.errorMessage.text = context?.getString(it as Int)
             } else{
                 binding.errorMessage.visibility = View.GONE
             }
@@ -84,11 +84,7 @@ class ScanningFragment : Fragment() {
 
 
 
-    private fun ShowHaveNoPermission(value: Boolean){
-
-    }
-
-    fun goConnect(device: BluetoothDevice){
+    private fun goConnect(device: BluetoothDevice){
         val bundle = bundleOf(ConnectionFragment.DEVICE_TO_CONNECT to device)
         (activity as INavigationActivity).getNavController().navigate(R.id.action_scanningFragment_to_connectionFragment, bundle)
     }

@@ -6,21 +6,21 @@ import android.os.Parcelable
 import androidx.annotation.RequiresApi
 
 data class MenuParameters(
-    override val name: String,
+    override val name: Int,
     val parameters: List<Parameter>,
-    val isPassword: Boolean = false
+    val activityToStart: Int = 0
 ) : Parameter(name) {
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
-        parcel.readString()!!,
+        parcel.readInt(),
         parcel.createTypedArrayList(Parameter)!!,
-        parcel.readBoolean()
+        parcel.readInt()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         super.writeToParcel(parcel, flags)
-        parcel.writeString(name)
+        parcel.writeInt(name)
         parcel.writeTypedList(parameters)
     }
 

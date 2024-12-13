@@ -35,7 +35,6 @@ class BleSendingModel : BleConnectionModel() {
 
                 }
                 BluetoothLeService.ACTION_DATA_READ ->{
-                    var data = intent.getByteArrayExtra(BluetoothLeService.READ_DATA)
                     var dataString = intent.getStringExtra(BluetoothLeService.ANSWER_DATA)
                     // TODO: Readable data
                     // Make manager for readable data and notifications about readable data

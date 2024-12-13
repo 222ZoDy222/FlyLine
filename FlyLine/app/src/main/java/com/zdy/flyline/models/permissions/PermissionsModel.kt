@@ -39,10 +39,7 @@ class PermissionsModel(
     }
 
     fun hasLocationPermission(): Boolean {
-        this.context.let {
-            return ContextCompat.checkSelfPermission(it.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        }
-        return false
+        return ContextCompat.checkSelfPermission(context.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
 //    val requestPermissionLauncher =

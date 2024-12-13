@@ -6,7 +6,7 @@ import android.text.InputType
 import com.zdy.flyline.BLE.Repository.bluetoothModels.BleSendingModel
 
 data class ParameterInt (
-    override val name: String,
+    override val name: Int,
     val min: Int,
     val max: Int,
     val default : Int,
@@ -18,7 +18,7 @@ data class ParameterInt (
     var currentValue: Int? = null
 
     constructor(parcel: Parcel) : this(
-        parcel.readString()!!,
+        parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
@@ -31,7 +31,7 @@ data class ParameterInt (
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         super.writeToParcel(parcel, flags)
-        parcel.writeString(name)
+        parcel.writeInt(name)
         parcel.writeInt(min)
         parcel.writeInt(max)
         parcel.writeInt(default)

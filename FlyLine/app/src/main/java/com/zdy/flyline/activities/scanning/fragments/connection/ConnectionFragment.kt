@@ -49,7 +49,7 @@ class ConnectionFragment : Fragment() {
         viewModel.isConnected().observe(viewLifecycleOwner){ isConnected->
             when(isConnected){
                 connected -> {
-                    binding.connectionStateTextView.text = "Connected to device"
+                    binding.connectionStateTextView.text = getString(R.string.connected_to_device)
                 }
 
                 disconnected -> {
@@ -58,7 +58,7 @@ class ConnectionFragment : Fragment() {
 
                 error -> {
                     //TODO: Error to connect device
-                    binding.connectionStateTextView.text = "error to connect"
+                    binding.connectionStateTextView.text = getString(R.string.error_to_connect)
                     lifecycleScope.launch {
                         delay(2000)
                         activity?.finish()
@@ -67,7 +67,7 @@ class ConnectionFragment : Fragment() {
                 }
 
                 services_discovered ->{
-                    binding.connectionStateTextView.text = "services discovered"
+                    binding.connectionStateTextView.text = getString(R.string.services_discovered)
                     (activity as INavigationActivity).getNavController().navigate(R.id.action_connectionFragment_to_passwordFragment)
                 }
 

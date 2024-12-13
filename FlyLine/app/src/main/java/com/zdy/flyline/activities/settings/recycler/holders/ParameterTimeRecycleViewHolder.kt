@@ -38,7 +38,7 @@ class ParameterTimeRecycleViewHolder(private val binding : ItemParameterTimeSett
         itemView.apply {
 
             binding.apply {
-                parameterName.text = currentParameter.parameterInt.name
+                parameterName.text = context.getString(currentParameter.parameterInt.name)
 
                 setOnClickListener {
                     showTimePickerDialog()
@@ -100,7 +100,7 @@ class ParameterTimeRecycleViewHolder(private val binding : ItemParameterTimeSett
 
 
 
-        dialogBinding.titleViewTime.text = currentParameter.parameterInt.name
+        dialogBinding.titleViewTime.text = itemView.context.getString(currentParameter.parameterInt.name)
 
         dialogBinding.okButton.setOnClickListener {
             val newMinute = dialogBinding.minutePicker.value

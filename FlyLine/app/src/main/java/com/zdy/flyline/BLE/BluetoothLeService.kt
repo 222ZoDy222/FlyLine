@@ -58,7 +58,7 @@ class BluetoothLeService : Service() {
 
 
     @SuppressLint("MissingPermission")
-    fun connect(device: BluetoothDevice, bluetoothAdapter : BluetoothAdapter, context: Context): Boolean {
+    fun connect(device: BluetoothDevice, context: Context): Boolean {
         try {
             bluetoothGatt = device.connectGatt(context, false, bluetoothGattCallback)
             return true

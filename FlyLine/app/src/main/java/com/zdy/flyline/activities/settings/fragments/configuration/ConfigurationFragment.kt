@@ -13,7 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zdy.flyline.R
 import com.zdy.flyline.activities.scanning.interfaces.INavigationActivity
-import com.zdy.flyline.activities.settings.interfaces.ISettingsActivity
 import com.zdy.flyline.activities.settings.recycler.ParametersAdapter
 import com.zdy.flyline.databinding.FragmentConfigurationBinding
 import com.zdy.flyline.protocol.parameters.Parameter
@@ -45,7 +44,8 @@ class ConfigurationFragment : Fragment() {
         viewModel.initParameters(paramToShow)
 
         viewModel.label.observe(viewLifecycleOwner){
-            (activity as AppCompatActivity).supportActionBar?.title = it
+            if(it != null)
+                (activity as AppCompatActivity).supportActionBar?.title = context?.getString(it as Int)
         }
 
         setupRecycle()

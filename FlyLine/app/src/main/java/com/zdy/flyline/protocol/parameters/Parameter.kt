@@ -4,13 +4,14 @@ import android.os.Parcel
 import android.os.Parcelable
 
 open class Parameter(
-    open val name: String
+    open val name: Int
 ) : Parcelable {
-    constructor(parcel: Parcel) : this(parcel.readString()!!) {
+    constructor(parcel: Parcel) : this(parcel.readInt()) {
     }
 
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(name)
+        parcel.writeInt(name)
     }
 
     override fun describeContents(): Int {

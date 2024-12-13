@@ -40,11 +40,11 @@ open class BleConnectionModel : BluetoothModel() {
                 }
                 BluetoothLeService.ACTION_DATA_ANSWER ->{
 
-                    val data = intent.getByteArrayExtra(BluetoothLeService.ANSWER_DATA)
+
 
                 }
                 BluetoothLeService.ACTION_DATA_READ ->{
-                    val data = intent.getByteArrayExtra(BluetoothLeService.READ_DATA)
+
                 }
             }
         }
@@ -62,7 +62,7 @@ open class BleConnectionModel : BluetoothModel() {
         ) {
             bluetoothService = (service as BluetoothLeService.LocalBinder).getService()
 
-            bluetoothService?.connect(deviceToConnect, bluetoothAdapter, context)
+            bluetoothService?.connect(deviceToConnect, context)
             isServiceConnected = true
         }
 
@@ -126,8 +126,8 @@ open class BleConnectionModel : BluetoothModel() {
                 context.unbindService(serviceConnection)
                 isServiceConnected = false
             }
-        }catch (ex: Exception){
-            var t = 0
+        }catch (_: Exception){
+
         }
 
     }

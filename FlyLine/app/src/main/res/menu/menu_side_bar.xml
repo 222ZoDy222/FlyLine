@@ -5,19 +5,19 @@
 
 
     <item android:id="@+id/navigate_connection"
-        android:title="Connection"
+        android:title="@string/connection"
         android:icon="@drawable/bluetooth_24px"/>
 
     <item android:id="@+id/configurationFragment"
-        android:title="Settings"
-        android:icon="@drawable/settings_24px"/>
+        android:title="@string/settings"
+        android:icon="@drawable/settings_24px" />
 
     <item android:id="@+id/navigate_manual"
-        android:title="Manual"
+        android:title="@string/manual"
         android:icon="@drawable/library_books_24px"/>
 
     <item android:id="@+id/aboutFragment"
-        android:title="About"
+        android:title="@string/about"
         android:icon="@drawable/info_24px"/>
 
 
