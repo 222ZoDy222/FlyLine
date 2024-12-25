@@ -29,41 +29,59 @@ class ScanningViewModel @Inject constructor(
 
     private val errorMessage: MutableLiveData<Any> = MutableLiveData(null)
 
+    private val isScanning : MutableLiveData<Boolean> = MutableLiveData(false)
+    fun getIsScanning() = isScanning
+
+
+
     fun getErrorMessage() = errorMessage
 
     private lateinit var permissionsModel : PermissionsModel
     private lateinit var scanningModel : ScanningModel
 
+
+
     fun onCreate(context: Context){
         bluetoothModel.stopConnection()
-        permissionsModel = PermissionsModel(context)
+        permissionsModel = PermissionsModel()
         scanningModel = ScanningModel(context)
-        checkPermissions()
+        scanningModel.setOnScanningListener {
+            isScanning.postValue(it)
+        }
+        checkPermissions(context)
 
     }
 
-    fun checkPermissions(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-            if(permissionsModel.hasLocationPermission()){
-                if(permissionsModel.hasNearbyDevicesPermission()){
+    fun checkPermissions(context: Context){
+
+
+        try{
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+                if(permissionsModel.hasLocationPermission(context)){
+                    if(permissionsModel.hasNearbyDevicesPermission(context)){
+                        errorMessage.postValue(null)
+                        startScan()
+                    }else{
+                        errorMessage.postValue(R.string.hasnearbydevicespermission)
+                        permissionsModel.requestNearbyDevicesPermission()
+                    }
+                }else{
+                    errorMessage.postValue(R.string.nolocationpermission)
+                    permissionsModel.requestLocationPermission()
+                }
+            }else {
+                if (permissionsModel.hasLocationPermission(context)) {
                     errorMessage.postValue(null)
                     startScan()
-                }else{
-                    errorMessage.postValue(R.string.hasnearbydevicespermission)
-                    permissionsModel.requestNearbyDevicesPermission()
+                } else {
+                    errorMessage.postValue(R.string.nolocationpermission)
+                    permissionsModel.requestLocationPermission()
                 }
-            }else{
-                errorMessage.postValue(R.string.nolocationpermission)
-                permissionsModel.requestLocationPermission()
             }
-        }else {
-            if (permissionsModel.hasLocationPermission()) {
-                errorMessage.postValue(null)
-            } else {
-                errorMessage.postValue(R.string.nolocationpermission)
-                permissionsModel.requestLocationPermission()
-            }
+        } catch (ex: Exception){
+            var t = ex.localizedMessage
         }
+
     }
 
 
@@ -73,7 +91,11 @@ class ScanningViewModel @Inject constructor(
 
     fun getDevices() = bleDevices
 
-    fun startScan(){
+    fun tryScanning(context: Context, permissionLauncher: ActivityResultLauncher<Array<String>>?){
+        permissionsModel.setRequestPermissionLauncher(permissionLauncher)
+        checkPermissions(context)
+    }
+    private fun startScan(){
         bleDevices.value?.clear()
         scanningModel.startScan(leScanCallback)
         if(!scanningModel.bluetoothEnabled){
@@ -93,7 +115,7 @@ class ScanningViewModel @Inject constructor(
                 bleDevices.value?.let { list->
                     val device = scanResult.device
 
-                    if(device.name != null && !contains(device)) {
+                    if(device.name != null && !contains(device) && device.name?.startsWith("FLT-") == true) {
                         list.add(device)
                         // For update observer only ^^
                         bleDevices.value = list
@@ -111,6 +133,9 @@ class ScanningViewModel @Inject constructor(
         return false
     }
 
+    fun resume(){
+        isScanning.postValue(scanningModel.getIsScanning())
+    }
 
 
 

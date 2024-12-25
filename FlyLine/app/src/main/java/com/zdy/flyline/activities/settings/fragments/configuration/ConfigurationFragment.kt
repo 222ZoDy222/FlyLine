@@ -41,7 +41,7 @@ class ConfigurationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val paramToShow = arguments?.getParcelable<Parameter>(PARAMETER_TAG)
-        viewModel.initParameters(paramToShow)
+        viewModel.initParameters(paramToShow, requireContext())
 
         viewModel.label.observe(viewLifecycleOwner){
             if(it != null)
@@ -73,7 +73,7 @@ class ConfigurationFragment : Fragment() {
         }
 
         adapter.setOnParameterValueChanged {
-            viewModel.setParameterValue(it.first,it.second)
+            viewModel.setParameterValue(requireContext(), it.first,it.second)
         }
 
         adapter.setOnSaveButtonListener {

@@ -7,6 +7,4 @@ import com.zdy.flyline.utils.connectionState
 
 interface ISettingsActivity {
     fun getBtModel() : BluetoothModel?
-    fun getConnectionState() : MutableLiveData<connectionState>
-
 }

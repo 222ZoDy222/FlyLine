@@ -1,9 +1,11 @@
 package com.zdy.flyline.activities.settings.fragments.configuration
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zdy.flyline.BLE.Repository.bluetoothModels.BleSendingModel
 import com.zdy.flyline.activities.settings.recycler.items.ItemRecycle
+import com.zdy.flyline.models.FlyControllerModel
 import com.zdy.flyline.protocol.parameters.MenuParameters
 import com.zdy.flyline.protocol.parameters.Parameter
 import com.zdy.flyline.protocol.parameters.ParameterInt
@@ -14,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ConfigurationViewModel @Inject constructor(
     private val bluetoothSendingModel: BleSendingModel,
+    private val flyControllerModel: FlyControllerModel
 ) : ViewModel() {
 
 
@@ -30,7 +33,7 @@ class ConfigurationViewModel @Inject constructor(
     }
 
 
-    fun initParameters(menu: Parameter? = null){
+    fun initParameters(menu: Parameter? = null, context: Context){
 
         menuParameters = (menu ?: SettingsMenu_main.getMenu()) as MenuParameters
 
@@ -46,11 +49,11 @@ class ConfigurationViewModel @Inject constructor(
                     if(param.inputType == 1){
                         val item = ItemRecycle.ParameterIntItem(param)
                         list.value!!.add(item)
-                        getParameterValue(item)
+                        getParameterValue(item, context)
                     } else if(param.inputType == 2){
                         val item = ItemRecycle.ParameterTimeItem(param)
                         list.value!!.add(item)
-                        getParameterValue(item)
+                        getParameterValue(item, context)
                     }
 
                 }
@@ -62,19 +65,29 @@ class ConfigurationViewModel @Inject constructor(
 
     }
 
-    private fun getParameterValue(item: ItemRecycle.ParameterIntItem){
+    private fun getParameterValue(item: ItemRecycle.ParameterIntItem, context: Context){
 
-        item.parameterInt.getValue(bluetoothSendingModel){
-            updateItem?.invoke(item)
+        if(item.parameterInt.isBT == 1){
+            item.parameterInt.getValue(bluetoothSendingModel){
+                updateItem?.invoke(item)
+            }
+        } else{
+            item.parameterInt.currentValue = flyControllerModel.getVibroTime(context)
         }
+
 
     }
 
 
-    fun setParameterValue(item: ItemRecycle.ParameterIntItem, value: Int){
-        item.parameterInt.setValue(bluetoothSendingModel,value){
-            updateItem?.invoke(item)
+    fun setParameterValue(context : Context, item: ItemRecycle.ParameterIntItem, value: Int){
+        if(item.parameterInt.isBT == 1){
+            item.parameterInt.setValue(bluetoothSendingModel,value){
+                updateItem?.invoke(item)
+            }
+        } else{
+            flyControllerModel.setVibroTime(context,value)
         }
+
     }
 
     fun saveParametersValue(){

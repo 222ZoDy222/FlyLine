@@ -21,8 +21,9 @@ class BleSendingModel : BleConnectionModel() {
                 }
                 BluetoothLeService.ACTION_GATT_DISCONNECTED -> {
                     stateConnection = connectionState.disconnected
+                    stopConnection()
                     connectionStateChanged?.onConnectionStateChanged(connectionState.disconnected)
-                    reconnect()
+
                 }
                 BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED -> {
                     stateConnection = connectionState.services_discovered

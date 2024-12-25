@@ -38,11 +38,12 @@ class SettingsMenu_Time {
                     ParameterInt(
                         (R.string.Vibrate_signal_until_the_finish),
                         0,
-                        1,
-                        0,
+                        420,
+                        15,
                         "Вибрация телефоном ",
                         null,
-                        2),
+                        2,
+                        0),
                 )
             )
         }

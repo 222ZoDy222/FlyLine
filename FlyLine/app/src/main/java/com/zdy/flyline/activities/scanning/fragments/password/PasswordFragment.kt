@@ -1,31 +1,25 @@
 package com.zdy.flyline.activities.scanning.fragments.password
 
-import android.bluetooth.BluetoothDevice
+import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.findViewTreeLifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.zdy.flyline.R
 import com.zdy.flyline.activities.scanning.interfaces.INavigationActivity
 import com.zdy.flyline.activities.settings.SettingsActivity
-import com.zdy.flyline.activities.settings.interfaces.ISettingsActivity
 import com.zdy.flyline.databinding.FragmentPasswordBinding
-import com.zdy.flyline.utils.connectionState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class PasswordFragment : Fragment() {
@@ -54,6 +48,10 @@ class PasswordFragment : Fragment() {
                 goToSettings()
             } else{
                 binding.loadingContainer.visibility = View.GONE
+                binding.appCompatEditText.requestFocus()
+                // Показываем клавиатуру
+                val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.showSoftInput(binding.appCompatEditText, InputMethodManager.SHOW_IMPLICIT)
             }
         }
 

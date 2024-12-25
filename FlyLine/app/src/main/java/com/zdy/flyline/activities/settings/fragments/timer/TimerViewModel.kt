@@ -1,9 +1,10 @@
 package com.zdy.flyline.activities.settings.fragments.timer
 
-import android.os.CountDownTimer
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zdy.flyline.BLE.Repository.IConnectionState
 import com.zdy.flyline.BLE.Repository.bluetoothModels.BleSendingModel
 import com.zdy.flyline.R
 import com.zdy.flyline.models.FlyControllerModel
@@ -23,6 +24,8 @@ class TimerViewModel @Inject constructor(
 
     val version : MutableLiveData<String> = MutableLiveData("")
 
+    fun getControllerName() = flyControllerModel.controllerName
+
     val rpmMid : MutableLiveData<Int> = MutableLiveData()
 
 
@@ -40,15 +43,21 @@ class TimerViewModel @Inject constructor(
 
 
     init {
-        if(bluetoothSendingModel.getConnectionState() != connectionState.disconnected) {
+        if(bluetoothSendingModel.getConnectionState()) {
             requestErrors()
+
         }
+
 
         flyControllerModel.setTickListener {
             currentFlyTime.postValue(String.format("%01d:%02d", it/60, it%60))
         }
     }
 
+    fun setVibroListener(context: Context, listener: ()-> Unit) {
+        flyControllerModel.getVibroTime(context)
+        flyControllerModel.setVibroListener(listener)
+    }
 
     private fun requestErrors() = viewModelScope.launch {
 
@@ -79,7 +88,7 @@ class TimerViewModel @Inject constructor(
     }
 
     fun reloadParameters(){
-        if(bluetoothSendingModel.getConnectionState() != connectionState.disconnected) {
+        if(bluetoothSendingModel.getConnectionState()) {
             requestParameters()
             flyControllerModel.getTimerParameters()
         }
@@ -124,7 +133,12 @@ class TimerViewModel @Inject constructor(
     private suspend fun requestParameterInt(liveData: MutableLiveData<Int>, command : String){
         bluetoothSendingModel.get(command){
             if(it.answer == BleSendingModel.FlyControllerAnswer.OK){
-                liveData.postValue(it.data?.toInt())
+                try{
+                    liveData.postValue(it.data?.toInt())
+                }catch (ex: Exception){
+                    liveData.postValue(null)
+                }
+
 
             } else{
                 viewModelScope.launch {

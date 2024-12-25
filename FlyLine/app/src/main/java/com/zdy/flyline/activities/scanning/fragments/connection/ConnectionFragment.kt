@@ -41,7 +41,6 @@ class ConnectionFragment : Fragment() {
 
         val deviceToConnect = arguments?.getParcelable<BluetoothDevice>(DEVICE_TO_CONNECT)
         if(deviceToConnect == null) {
-
             return
         } else{
             viewModel.connect(deviceToConnect,requireContext())

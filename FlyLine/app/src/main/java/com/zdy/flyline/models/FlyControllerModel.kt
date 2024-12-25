@@ -1,5 +1,7 @@
 package com.zdy.flyline.models
 
+import android.app.Application
+import android.content.Context
 import android.os.CountDownTimer
 import com.zdy.flyline.BLE.Repository.bluetoothModels.BleSendingModel
 
@@ -24,6 +26,30 @@ class FlyControllerModel(
 
 
     }
+
+    var controllerName : String? = null
+
+    private var vibroTime: Int = 0
+
+    fun getVibroTime(context: Context) : Int{
+        val sharedPref = context.getSharedPreferences("VibroPref",Context.MODE_PRIVATE)
+        if(sharedPref == null){
+            vibroTime = 15
+            return vibroTime
+        }
+        vibroTime = sharedPref.getInt(VIBRO_TIME_KEY,15)
+        return vibroTime
+    }
+
+    fun setVibroTime(context: Context, value: Int){
+        val sharedPref = context.getSharedPreferences("VibroPref",Context.MODE_PRIVATE) ?: return
+        vibroTime = value
+        with(sharedPref.edit()){
+            putInt(VIBRO_TIME_KEY,value)
+            apply()
+        }
+    }
+
     fun getTimerParameters(){
 
         checkIsFlying()
@@ -51,9 +77,15 @@ class FlyControllerModel(
     private var currentTime: Int = 0
     private var timer : CountDownTimer? = null
     private var tickListener : ((Int) -> Unit)? = null
+    private var vibroListener : (()->Unit)? = null
     fun setTickListener(listener: (Int)->Unit){
         tickListener = listener
     }
+
+    fun setVibroListener(listener: () -> Unit){
+        vibroListener = listener
+    }
+
     private fun startTimer(startTime: Int? = null){
 
         var timeToWait = 0
@@ -72,6 +104,7 @@ class FlyControllerModel(
             override fun onTick(millisUntilFinished: Long) {
                 currentTime--
                 tickListener?.invoke(currentTime)
+                if(currentTime == vibroTime) vibroListener?.invoke()
             }
 
             override fun onFinish() {
@@ -108,7 +141,9 @@ class FlyControllerModel(
         }
     }
 
-
+    companion object{
+        private const val VIBRO_TIME_KEY = "VIBRO_TIME_KEY"
+    }
 
 
 

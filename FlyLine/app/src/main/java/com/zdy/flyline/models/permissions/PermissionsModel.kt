@@ -7,39 +7,60 @@ import android.location.LocationManager
 import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 class PermissionsModel(
-    private val context: Context
+
 ) {
 
     private var requestPermissionsLauncher : ActivityResultLauncher<Array<String>>? = null
 
-    fun setRequestPermissionLauncher(launcher: ActivityResultLauncher<Array<String>>){
+    init {
+
+    }
+
+    fun setRequestPermissionLauncher(launcher: ActivityResultLauncher<Array<String>>?){
         requestPermissionsLauncher = launcher
     }
 
-    fun isLocationEnabled(): Boolean {
-        val locationManager = this.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    fun requestPermissions(context: Context){
+
+    }
+
+    fun isLocationEnabled(context: Context): Boolean {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 
 
-    fun hasNearbyDevicesPermission(): Boolean {
+    fun hasNearbyDevicesPermission(context: Context): Boolean {
         return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.S) {
-            this.context.let {
-                ContextCompat.checkSelfPermission(it.applicationContext, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(it.applicationContext,
-                            Manifest.permission.BLUETOOTH_CONNECT)== PackageManager.PERMISSION_GRANTED
-            }
+            ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(context,
+                        Manifest.permission.BLUETOOTH_CONNECT)== PackageManager.PERMISSION_GRANTED
         }else{
             true
         }
     }
 
-    fun hasLocationPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(context.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    fun hasPostNotifications(context: Context) : Boolean{
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        } else {
+            // Для устройств ниже Android 13 разрешение на уведомления не требуется
+            true
+        }
+    }
+
+
+    fun hasLocationPermission(context: Context): Boolean {
+        try{
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        } catch (_: Exception){
+            return false
+        }
     }
 
 //    val requestPermissionLauncher =
@@ -57,7 +78,7 @@ class PermissionsModel(
 //                // decision.
 //            }
 //        }
-//
+////
 //
 //    @SuppressLint("LongLogTag")
 //    val requestPermissionsLauncher =

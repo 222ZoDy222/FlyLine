@@ -45,9 +45,9 @@ class ParameterTimeRecycleViewHolder(private val binding : ItemParameterTimeSett
                 }
                 if(currentParameter.parameterInt.currentValue == null){
                     inputField.text = "-"
-                    inputField.isClickable = false
+
                 } else{
-                    inputField.isClickable = true
+
                     updateValue(currentParameter.parameterInt.currentValue!!)
                 }
 

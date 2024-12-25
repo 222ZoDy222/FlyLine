@@ -25,8 +25,7 @@ class ScanningDeviceAdapter() : RecyclerView.Adapter<ScanningDeviceAdapter.Scann
             } catch (ex: Exception){
                 nameValue.text = item.context.getString(R.string.unknown_device)
             }
-
-            binding.btnConnect.setOnClickListener {
+            itemView.setOnClickListener {
                 onItemClickConnect?.invoke(dev)
             }
         }

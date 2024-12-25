@@ -8,6 +8,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.IBinder
 import com.zdy.flyline.BLE.BluetoothLeService
 import com.zdy.flyline.BLE.Repository.IConnectionState
@@ -17,7 +18,7 @@ import com.zdy.flyline.utils.connectionState
 open class BleConnectionModel : BluetoothModel() {
 
     protected var stateConnection : connectionState = connectionState.disconnected
-    fun getConnectionState() = stateConnection
+
     protected var connectionStateChanged: IConnectionState? = null
     fun setOnConnectionStateChanged(callback: IConnectionState){
         connectionStateChanged = callback
@@ -114,7 +115,12 @@ open class BleConnectionModel : BluetoothModel() {
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun resume(context: Context){
         this.context = context
-        context.registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter(), Context.RECEIVER_EXPORTED)
+        } else {
+            @Suppress("UnspecifiedRegisterReceiverFlag")
+            context.registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter())
+        }
     }
 
 

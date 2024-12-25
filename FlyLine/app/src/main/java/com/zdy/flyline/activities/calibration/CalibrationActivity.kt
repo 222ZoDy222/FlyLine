@@ -22,6 +22,8 @@ class CalibrationActivity : AppCompatActivity() {
         binding = ActivityCalibrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+
         viewModel.getProgressBarValue().observe(this){
             binding.buttonProgress.progress = it
         }
@@ -63,6 +65,10 @@ class CalibrationActivity : AppCompatActivity() {
 
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
+    }
     override fun onPause() {
         super.onPause()
         viewModel.pause()

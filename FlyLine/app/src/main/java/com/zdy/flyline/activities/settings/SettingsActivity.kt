@@ -36,7 +36,12 @@ class SettingsActivity : AppCompatActivity(), ISettingsActivity, INavigationActi
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        settingsViewModel.goConnectionList.observe(this){
+            if(it){
+                settingsViewModel.disconnect()
+                finish()
+            }
+        }
 
         binding.apply {
             // -------------------- Setup Actionbar -------------------- //
@@ -101,7 +106,6 @@ class SettingsActivity : AppCompatActivity(), ISettingsActivity, INavigationActi
     }
 
     override fun getBtModel(): BluetoothModel? = settingsViewModel.getBtModel()
-    override fun getConnectionState() = settingsViewModel.isConnected()
     override fun getNavController(): NavController = navController
 }
 

@@ -19,8 +19,13 @@ class ChangePasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChangePasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
         setupBinding()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 
     private fun setupBinding(){

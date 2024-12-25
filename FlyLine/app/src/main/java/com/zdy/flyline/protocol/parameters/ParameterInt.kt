@@ -14,6 +14,7 @@ data class ParameterInt (
     val command: String?,
     /// 1 - default Int; 2 - Time Int
     val inputType: Int = 1,
+    val isBT: Int = 1
 ) : Parameter(name){
     var currentValue: Int? = null
 
@@ -24,7 +25,9 @@ data class ParameterInt (
         parcel.readInt(),
         parcel.readString().toString(),
         parcel.readString(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readInt(),
+
     ) {
         currentValue = parcel.readValue(Int::class.java.classLoader) as? Int
     }
@@ -38,6 +41,7 @@ data class ParameterInt (
         parcel.writeString(description)
         parcel.writeString(command)
         parcel.writeValue(currentValue)
+        parcel.writeInt(isBT)
     }
 
     override fun describeContents(): Int {

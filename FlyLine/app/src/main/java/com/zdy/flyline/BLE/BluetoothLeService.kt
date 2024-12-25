@@ -20,13 +20,14 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.zdy.flyline.R
+import com.zdy.flyline.models.permissions.PermissionsModel
 import java.util.UUID
 
 
 private const val TAG = "BluetoothLeService"
 private val SERVICE_UUID = UUID.fromString("0000FFE0-0000-1000-8000-00805F9B34FB")
 private val CHARACTERISTIC_UUID = UUID.fromString("0000FFE1-0000-1000-8000-00805F9B34FB")
-private const val FOREGROUND_SERVICE_NOTIFICATION_ID=1
+private const val FOREGROUND_SERVICE_NOTIFICATION_ID = 128
 private const val CHANNEL_NAME = "Bluetooth LE Service Channel"
 private const val CHANNEL_ID = "BluetoothLeServiceChannel"
 class BluetoothLeService : Service() {
@@ -34,8 +35,11 @@ class BluetoothLeService : Service() {
 
     private var bluetoothGatt: BluetoothGatt? = null
     private var connectionState = STATE_DISCONNECTED
+    fun getConnectionState() = connectionState
 
     private val binder = LocalBinder()
+
+    private var permissionsModel = PermissionsModel()
 
     override fun onBind(intent: Intent): IBinder {
         return binder
@@ -44,6 +48,8 @@ class BluetoothLeService : Service() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
+//        val notification = createNotification()
+//        startForeground(FOREGROUND_SERVICE_NOTIFICATION_ID, notification)
     }
 
     override fun onDestroy() {
@@ -74,6 +80,11 @@ class BluetoothLeService : Service() {
         @SuppressLint("MissingPermission")
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
+
+//                var locPerm = permissionsModel.hasLocationPermission(this as Context)
+//                var nerPer = permissionsModel.hasNearbyDevicesPermission(applicationContext)
+//                var postNotification = permissionsModel.hasPostNotifications(applicationContext)
+
                 connectionState = STATE_CONNECTED
                 val notification = createNotification()
                 startForeground(FOREGROUND_SERVICE_NOTIFICATION_ID, notification)
@@ -132,8 +143,10 @@ class BluetoothLeService : Service() {
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT,
-            )
+                NotificationManager.IMPORTANCE_LOW,
+            ).apply {
+                description = "Service for BLE characteristic"
+            }
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
         }
@@ -143,8 +156,9 @@ class BluetoothLeService : Service() {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Fly Controller")
             .setContentText("Connected")
-            .setSmallIcon(R.drawable.logo2)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSmallIcon(R.drawable.logo)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .build()
     }
 
@@ -260,8 +274,8 @@ class BluetoothLeService : Service() {
         const val ANSWER_DATA = "com.zdy.bluetooth.le.ANSWER_DATA"
         const val READ_DATA = "com.zdy.bluetooth.le.READ_DATA"
 
-        private const val STATE_DISCONNECTED = 0
-        private const val STATE_CONNECTED = 2
+        const val STATE_DISCONNECTED = 0
+        const val STATE_CONNECTED = 2
 
 
 

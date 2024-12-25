@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +26,22 @@ class ScanningFragment : Fragment() {
 
     private val mViewModel: ScanningViewModel by viewModels()
 
+
+    val requestPermissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        permissions.entries.forEach { entry ->
+            val permission = entry.key
+            val isGranted = entry.value
+            if (isGranted) {
+                // Разрешение предоставлено
+                mViewModel.tryScanning(requireContext(), null)
+            } else {
+                // Разрешение отклонено
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,15 +55,17 @@ class ScanningFragment : Fragment() {
         mViewModel.onCreate(requireContext())
         setupRecycle()
         addListeners()
-        mViewModel.startScan()
+        mViewModel.tryScanning(requireContext(),requestPermissionsLauncher)
 
     }
+
+
 
     private fun addListeners(){
 
 
         binding.startScanButton.setOnClickListener {
-            mViewModel.startScan()
+            mViewModel.tryScanning(requireContext(),requestPermissionsLauncher)
         }
 
         mViewModel.getDevices().observe(viewLifecycleOwner){
@@ -62,6 +81,15 @@ class ScanningFragment : Fragment() {
             }
         }
 
+        mViewModel.getIsScanning().observe(viewLifecycleOwner){
+            if(it){
+                binding.progressBar.visibility = View.VISIBLE
+                binding.rcViewScanning.visibility = View.GONE
+            } else{
+                binding.progressBar.visibility = View.GONE
+                binding.rcViewScanning.visibility = View.VISIBLE
+            }
+        }
 
     }
 
@@ -88,6 +116,8 @@ class ScanningFragment : Fragment() {
         val bundle = bundleOf(ConnectionFragment.DEVICE_TO_CONNECT to device)
         (activity as INavigationActivity).getNavController().navigate(R.id.action_scanningFragment_to_connectionFragment, bundle)
     }
+
+
 
 
 

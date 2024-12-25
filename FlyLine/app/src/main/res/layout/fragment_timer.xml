@@ -316,7 +316,7 @@
                     android:layout_gravity="center"
                     android:text="@string/accident"
                     android:textColor="@color/red"
-                    android:textSize="10pt" />
+                    android:textSize="8pt" />
 
                 <TextView
                     android:id="@+id/warning_message"

@@ -3,8 +3,8 @@
     <string name="Connect">Подключиться</string>
     <string name="name">Имя:</string>
     <string name="unknown_device">Неизвестное устройство</string>
-    <string name="scan">Сканировать</string>
-    <string name="scanning">Сканирование</string>
+    <string name="scan">Поиск устройств</string>
+    <string name="scanning">Доступные устройства</string>
     <string name="nolocationpermission">Нет разрешения на местоположение</string>
     <string name="hasnearbydevicespermission">Нет разрешения на поиск устройств по близости</string>
     <string name="fly_time">Время полёта</string>

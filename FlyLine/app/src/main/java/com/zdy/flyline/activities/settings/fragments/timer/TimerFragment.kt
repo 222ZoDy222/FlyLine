@@ -1,5 +1,6 @@
 package com.zdy.flyline.activities.settings.fragments.timer
 
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -11,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.zdy.flyline.R
+import com.zdy.flyline.activities.scanning.interfaces.INavigationActivity
 import com.zdy.flyline.databinding.FragmentTimerBinding
+import com.zdy.flyline.utils.extensions.vibratePhone
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -71,7 +74,7 @@ class TimerFragment : Fragment() {
     private fun addListeners(){
 
         viewModel.version.observe(viewLifecycleOwner){
-            (activity as AppCompatActivity).supportActionBar?.title ="Fly-controller version: $it"
+            (activity as AppCompatActivity).supportActionBar?.title ="${viewModel.getControllerName()} version: $it"
         }
 
 
@@ -81,9 +84,12 @@ class TimerFragment : Fragment() {
                 binding.currentFlyTime.text = it
                 binding.currentFlyTime.visibility = View.VISIBLE
             } else{
-                binding.currentFlyTime.text = "00:00"
+                binding.currentFlyTime.text = "0:00"
             }
+        }
 
+        viewModel.setVibroListener(requireContext()) {
+            vibratePhone()
         }
 
 
@@ -127,6 +133,7 @@ class TimerFragment : Fragment() {
                 binding.warningMessage.text = context?.getString(it as Int)
             }
         }
+
 
         var clickWarningCount = 0
         binding.warningLayout.setOnClickListener {

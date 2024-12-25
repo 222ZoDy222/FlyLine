@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.BluetoothLeScanner
 import android.bluetooth.le.ScanCallback
+import android.bluetooth.le.ScanFilter
+import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,12 +21,28 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 
 class ScanningModel(
-    private val context: Context
+    val context: Context
 ) {
 
-    private var scanning = false
+    private var mScanning = false
+    private var scanning : Boolean
+        get(){
+            return mScanning
+        }
+        set(value){
+            mScanning = value
+            onScanningListener?.invoke(mScanning)
+        }
+
+    private var onScanningListener: ((Boolean)->Unit)? = null
+    fun setOnScanningListener(callback: ((Boolean)->Unit)){
+        onScanningListener = callback
+    }
+    fun getIsScanning() = scanning
+
+
     private val handler = Handler(Looper.getMainLooper())
-    val SCAN_PERIOD = 2000
+    private val SCAN_PERIOD = 2500
 
     private var _locationEnabled :Boolean = false
     val locationEnabled get() = _locationEnabled
@@ -88,6 +106,18 @@ class ScanningModel(
             bluetoothLeScanner.stopScan(callback)
 
         }
+    }
+
+    fun createScanFilter(): ScanFilter {
+        return ScanFilter.Builder()
+            .setDeviceName("FLT-") // Установим префикс имени устройства
+            .build()
+    }
+
+    fun createScanSettings(): ScanSettings {
+        return ScanSettings.Builder()
+            .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY) // Режим сканирования
+            .build()
     }
 
 }

@@ -25,7 +25,13 @@ open class BluetoothModel() {
 
     protected var bluetoothService : BluetoothLeService? = null
 
-
+    fun getConnectionState() : Boolean{
+        return if(bluetoothService != null){
+            bluetoothService!!.getConnectionState() == BluetoothLeService.STATE_CONNECTED
+        } else{
+            false
+        }
+    }
 
 
     protected fun makeGattUpdateIntentFilter(): IntentFilter {
